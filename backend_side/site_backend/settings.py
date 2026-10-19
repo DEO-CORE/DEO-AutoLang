@@ -93,7 +93,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
-    for origin in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+    for origin in os.environ.get(
+        "DJANGO_CSRF_TRUSTED_ORIGINS",
+        "https://site-api.autolang.deo-core.codes",
+    ).split(",")
     if origin.strip()
 ]
 CORS_ALLOWED_ORIGINS = [

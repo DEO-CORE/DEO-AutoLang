@@ -1,0 +1,17 @@
+node_modules/
+.venv/
+**/.venv/
+dist/
+.DS_Store
+__pycache__/
+*.py[cod]
+*.sqlite3
+.vite/
+.gradle/
+build/
+*.log
+deo_auto_lang_backend/data/*.tmp
+backend_side/db.sqlite3
+deo_auto_lang_base/catalog_backend/catalog.sqlite3
+deo_auto_lang_base/catalog_backend/private_media/
+backend_side/site_api/migrations/__pycache__/

@@ -1,0 +1,13 @@
+{
+  "name": "deo-autolang-workspace",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:site": "pnpm --dir frontend_site dev",
+    "dev:site-api": "node scripts/run-service.mjs site-api",
+    "dev:platform-api": "node scripts/run-service.mjs platform-api",
+    "dev:base": "node scripts/run-service.mjs base",
+    "build": "pnpm --dir frontend_site build"
+  }
+}

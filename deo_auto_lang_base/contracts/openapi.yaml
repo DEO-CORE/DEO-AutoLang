@@ -1,0 +1,56 @@
+openapi: 3.1.0
+info:
+  title: DEO AutoLang API
+  version: 0.1.0
+  description: Read-only verified compatibility catalog and privacy-minimized review requests.
+servers:
+  - url: http://127.0.0.1:4178
+paths:
+  /health:
+    get:
+      summary: Backend health
+      responses:
+        '200': { description: Service is running }
+  /api/v1/compatibility:
+    get:
+      summary: List published verified configurations
+      responses:
+        '200':
+          description: Only exact verified configurations are returned
+  /api/v1/compatibility/{id}:
+    get:
+      summary: Get a published verified configuration
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: Verified configuration }
+        '404': { description: No published match }
+  /api/v1/compatibility-requests:
+    post:
+      summary: Submit a vehicle configuration for review
+      description: Never accepts or stores VIN, registration, account credentials, or other personal identifiers.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [make, model, consentAccepted]
+              additionalProperties: false
+              properties:
+                make: { type: string, minLength: 2, maxLength: 80 }
+                model: { type: string, minLength: 1, maxLength: 120 }
+                year: { type: string, pattern: '^\\d{4}$', maxLength: 10 }
+                region: { type: string, maxLength: 80 }
+                systemType: { type: string, enum: [factory, aftermarket, unknown, ''] }
+                hardwareRevision: { type: string, maxLength: 120 }
+                softwareVersion: { type: string, maxLength: 120 }
+                details: { type: string, maxLength: 2000 }
+                consentAccepted: { type: boolean, const: true }
+      responses:
+        '201': { description: Request stored locally for MVP review }
+        '422': { description: Input validation failed }
+        '429': { description: Request rate limit exceeded }

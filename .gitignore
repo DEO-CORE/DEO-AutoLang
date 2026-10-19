@@ -1,4 +1,8 @@
 node_modules/
+.vercel/
+.env
+.env.*
+!.env.example
 .venv/
 **/.venv/
 dist/

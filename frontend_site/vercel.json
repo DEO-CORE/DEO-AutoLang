@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/site-api/:path*",
+      "destination": "https://site-api.autolang.deo-core.codes/site-api/:path*"
+    }
+  ]
+}

@@ -54,12 +54,22 @@ TEMPLATES = [
 ]
 WSGI_APPLICATION = "catalog_backend.wsgi.application"
 ASGI_APPLICATION = "catalog_backend.asgi.application"
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "catalog.sqlite3",
-    },
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if DATABASE_URL:
+    import dj_database_url
+
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL, conn_max_age=0, ssl_require=True
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "catalog.sqlite3",
+        },
+    }
 MEDIA_ROOT = BASE_DIR / "private_media"
 MEDIA_URL = "/private-media/"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024
@@ -77,7 +87,17 @@ TIME_ZONE = "Asia/Bishkek"
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get("BASE_DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = not DEBUG
 BASE_CATALOG_SERVICE_KEY = os.environ.get(
     "BASE_CATALOG_SERVICE_KEY",
     "local-dev-platform-only-key" if DEBUG else "",

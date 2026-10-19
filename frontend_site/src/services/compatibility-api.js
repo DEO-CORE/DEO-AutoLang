@@ -1,4 +1,4 @@
-const API_ROOT = "/site-api/v1";
+const API_ROOT = import.meta.env.VITE_SITE_API_URL || "/site-api/v1";
 
 async function readResponse(response) {
   const payload = await response.json();

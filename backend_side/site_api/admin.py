@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import WebsiteCompatibilityRequest, WebsiteVerifiedConfiguration
+from .models import WebsiteCompatibilityRequest
 
 
 @admin.register(WebsiteCompatibilityRequest)
@@ -27,24 +27,3 @@ class WebsiteCompatibilityRequestAdmin(admin.ModelAdmin):
             },
         ),
     )
-
-
-@admin.register(WebsiteVerifiedConfiguration)
-class WebsiteVerifiedConfigurationAdmin(admin.ModelAdmin):
-    list_display = (
-        "make",
-        "model",
-        "generation",
-        "system_type",
-        "verified_at",
-        "is_published",
-    )
-    list_filter = ("is_published", "region", "system_type")
-    search_fields = (
-        "make",
-        "model",
-        "generation",
-        "hardware_revision",
-        "software_version",
-    )
-    list_editable = ("is_published",)

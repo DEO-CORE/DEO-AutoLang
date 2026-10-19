@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Callout, PageHero } from "../components/site-shell.jsx";
-import { compatibilityStates, verifiedConfigurations } from "../content.js";
+import { compatibilityStates } from "../content.js";
 import { listSiteCompatibility } from "../services/compatibility-api.js";
 
 export function CompatibilityPage() {
   const [query, setQuery] = useState("");
   const [systemType, setSystemType] = useState("all");
-  const [configurations, setConfigurations] = useState(verifiedConfigurations);
+  const [configurations, setConfigurations] = useState([]);
   const [catalogUnavailable, setCatalogUnavailable] = useState(false);
   useEffect(() => {
     let active = true;
@@ -86,7 +86,9 @@ export function CompatibilityPage() {
               <article className="vehicle-card" key={vehicle.id}>
                 <div className="vehicle-card-top">
               <span>РУСИФИКАЦИЯ ПРОВЕРЕНА</span>
-                  <span>ПРОВЕРЕНО {vehicle.verifiedAt}</span>
+                  {vehicle.verifiedAt && (
+                    <span>ПРОВЕРЕНО {vehicle.verifiedAt}</span>
+                  )}
                 </div>
                 <h2>
                   {vehicle.make} {vehicle.model}

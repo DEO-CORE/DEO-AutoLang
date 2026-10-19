@@ -55,6 +55,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/site-api': process.env.VITE_SITE_API_TARGET || 'http://127.0.0.1:4179',
+      '/catalog-api': {
+        target: process.env.VITE_CATALOG_API_TARGET || 'http://127.0.0.1:4180',
+        rewrite: (path) => path.replace(/^\/catalog-api/, '/api'),
+      },
     },
   },
   build: {

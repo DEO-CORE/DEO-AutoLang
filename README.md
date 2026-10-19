@@ -30,7 +30,7 @@ deo_auto_lang_base/catalog_backend/.venv/bin/python deo_auto_lang_base/catalog_b
 pnpm dev
 ```
 
-This starts React on `http://127.0.0.1:5173/`, the website-only Django API/admin on `http://127.0.0.1:4179/`, platform FastAPI on `http://127.0.0.1:4178/`, and the private platform catalog service on `http://127.0.0.1:4180/`. Vite proxies only `/site-api/` to the website backend. FastAPI reads verified catalog entries from the Django base service using a service key. The website has no route, key, or dependency to that service. `pnpm build` builds the public website.
+This starts React on `http://127.0.0.1:5173/`, the website-only Django API/admin on `http://127.0.0.1:4179/`, platform FastAPI on `http://127.0.0.1:4178/`, and the catalog service on `http://127.0.0.1:4180/`. Vite proxies `/site-api/` to the website backend and `/catalog-api/` to the catalog's public, read-only compatibility endpoint. The public website reads only configurations marked verified in the catalog admin; request submissions remain owned by the website backend. FastAPI continues to read the catalog through its separate internal service endpoint. `pnpm build` builds the public website.
 
 Create separate administrators with `backend_side/.venv/bin/python backend_side/manage.py createsuperuser` and `deo_auto_lang_base/catalog_backend/.venv/bin/python deo_auto_lang_base/catalog_backend/manage.py createsuperuser`. Website: `/admin/` on port 4179. Platform vehicle/firmware base: `/admin/` on port 4180. Never publish firmware file storage as static website assets.
 

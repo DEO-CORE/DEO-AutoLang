@@ -19,6 +19,7 @@ ALLOWED_HOSTS = [
 ]
 INSTALLED_APPS = [
     "jazzmin",
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -106,6 +108,15 @@ if not BASE_CATALOG_SERVICE_KEY:
     raise RuntimeError(
         "BASE_CATALOG_SERVICE_KEY must be set outside local development."
     )
+
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in (
+        os.environ.get("BASE_CORS_ALLOWED_ORIGINS")
+        or "https://autolang.deo-core.codes,http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",")
+    if origin.strip()
+]
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],

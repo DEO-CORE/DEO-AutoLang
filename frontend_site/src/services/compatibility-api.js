@@ -1,4 +1,8 @@
-const API_ROOT = import.meta.env.VITE_SITE_API_URL || "/site-api/v1";
+const SITE_API_ROOT = import.meta.env.VITE_SITE_API_URL || "/site-api/v1";
+const CATALOG_API_ROOT = import.meta.env.DEV
+  ? "/catalog-api/v1"
+  : import.meta.env.VITE_CATALOG_API_URL ||
+    "https://catalog.autolang.deo-core.codes/api/v1";
 
 async function readResponse(response) {
   const payload = await response.json();
@@ -12,13 +16,19 @@ async function readResponse(response) {
 }
 
 export async function listSiteCompatibility() {
-  const response = await fetch(`${API_ROOT}/compatibility/`);
+  const response = await fetch(`${CATALOG_API_ROOT}/compatibility/`);
   const payload = await readResponse(response);
-  return Array.isArray(payload.items) ? payload.items : [];
+  return Array.isArray(payload.items)
+    ? payload.items.map((item) => ({
+        ...item,
+        system: item.systemType,
+        verifiedAt: item.verifiedAt || "",
+      }))
+    : [];
 }
 
 export async function submitSiteCompatibilityRequest(payload) {
-  const response = await fetch(`${API_ROOT}/compatibility-requests/`, {
+  const response = await fetch(`${SITE_API_ROOT}/compatibility-requests/`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(payload),

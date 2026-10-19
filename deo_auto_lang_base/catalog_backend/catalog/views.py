@@ -29,3 +29,17 @@ class PlatformVerifiedCatalogView(APIView):
         items = VerifiedConfigurationSerializer(catalog.items, many=True).data
         updated_at = catalog.updated_at.isoformat() if catalog.updated_at else None
         return Response({"items": items, "total": len(items), "updatedAt": updated_at})
+
+
+class PublicVerifiedCatalogView(APIView):
+    """Read-only public view of configurations approved for publication."""
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        catalog = ListVerifiedConfigurations(
+            DjangoVerifiedConfigurationRepository()
+        ).execute()
+        items = VerifiedConfigurationSerializer(catalog.items, many=True).data
+        updated_at = catalog.updated_at.isoformat() if catalog.updated_at else None
+        return Response({"items": items, "total": len(items), "updatedAt": updated_at})

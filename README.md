@@ -30,13 +30,15 @@ deo_auto_lang_base/catalog_backend/.venv/bin/python deo_auto_lang_base/catalog_b
 pnpm dev
 ```
 
-This starts React on `http://127.0.0.1:5173/`, the website-only Django API/admin on `http://127.0.0.1:4179/`, platform FastAPI on `http://127.0.0.1:4178/`, and the catalog service on `http://127.0.0.1:4180/`. Vite proxies `/site-api/` to the website backend and `/catalog-api/` to the catalog's public, read-only compatibility endpoint. The public website reads only configurations marked verified in the catalog admin; request submissions remain owned by the website backend. FastAPI continues to read the catalog through its separate internal service endpoint. `pnpm build` builds the public website.
+This starts React on `http://127.0.0.1:5173/`, the website-only Django API/admin on `http://127.0.0.1:4179/`, platform FastAPI on `http://127.0.0.1:4178/`, and the catalog service on `http://127.0.0.1:4180/`. Vite proxies `/site-api/` to the website backend and `/catalog-api/` to the catalog's public, read-only compatibility endpoint. The public website shows verified configurations and, separately, records explicitly marked “На проверке”; request submissions remain owned by the website backend. FastAPI continues to read only verified configurations through its separate internal service endpoint. `pnpm build` builds the public website.
+
+To add the initial candidate set to a development catalog, run `deo_auto_lang_base/catalog_backend/.venv/bin/python deo_auto_lang_base/catalog_backend/manage.py seed_supported_vehicles`. The command is idempotent and creates eight entries in “На проверке”; it does not mark them compatible.
 
 Create separate administrators with `backend_side/.venv/bin/python backend_side/manage.py createsuperuser` and `deo_auto_lang_base/catalog_backend/.venv/bin/python deo_auto_lang_base/catalog_backend/manage.py createsuperuser`. Website: `/admin/` on port 4179. Platform vehicle/firmware base: `/admin/` on port 4180. Never publish firmware file storage as static website assets.
 
 The website backend and platform base each have their own SQLite database, migrations, credentials, and Jazzmin admin. FastAPI is a platform-facing API and does not own the vehicle/firmware catalog. Neither stack is production configured; do not expose development servers publicly. Set independent strong production secrets and a non-default `BASE_CATALOG_SERVICE_KEY` before deployment.
 
-This is the first MVP foundation, not a release candidate. The desktop client currently discovers ADB devices and reads basic Android properties. Compatibility remains empty until a real configuration is reviewed. Session history, PDF reports, role-protected console workflows, and a verified localization procedure remain future milestones.
+This is the first MVP foundation, not a release candidate. The desktop client currently discovers ADB devices and reads basic Android properties. Verified compatibility remains empty until an exact multimedia configuration and localization procedure are reviewed. Session history, PDF reports, role-protected console workflows, and a verified localization procedure remain future milestones.
 
 ## Desktop client
 

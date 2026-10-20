@@ -22,6 +22,7 @@ class VehicleConfigurationAdmin(admin.ModelAdmin):
         "software_version",
     )
     readonly_fields = ("created_at", "updated_at")
+    actions = ("move_to_review",)
     fieldsets = (
         (
             "Автомобиль",
@@ -55,6 +56,13 @@ class VehicleConfigurationAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    @admin.action(description="Перевести черновики в статус «На проверке»")
+    def move_to_review(self, request, queryset):
+        updated = queryset.filter(
+            review_status=VehicleConfiguration.ReviewStatus.DRAFT
+        ).update(review_status=VehicleConfiguration.ReviewStatus.TESTING)
+        self.message_user(request, f"Переведено на проверку: {updated}.")
 
 
 @admin.register(FirmwarePackage)

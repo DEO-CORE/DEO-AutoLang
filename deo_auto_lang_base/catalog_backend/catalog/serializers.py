@@ -12,3 +12,9 @@ class VerifiedConfigurationSerializer(serializers.Serializer):
     softwareVersion = serializers.CharField(source="software_version")
     verifiedAt = serializers.DateField(source="verified_at", allow_null=True)
     limitations = serializers.CharField()
+    yearFrom = serializers.IntegerField(source="year_from", allow_null=True)
+    yearTo = serializers.IntegerField(source="year_to", allow_null=True)
+
+
+class PublicReviewCandidateSerializer(VerifiedConfigurationSerializer):
+    reviewStatus = serializers.CharField(source="review_status")

@@ -18,13 +18,17 @@ async function readResponse(response) {
 export async function listSiteCompatibility() {
   const response = await fetch(`${CATALOG_API_ROOT}/compatibility/`);
   const payload = await readResponse(response);
-  return Array.isArray(payload.items)
-    ? payload.items.map((item) => ({
-        ...item,
-        system: item.systemType,
-        verifiedAt: item.verifiedAt || "",
-      }))
-    : [];
+  const normalize = (item) => ({
+    ...item,
+    system: item.systemType,
+    verifiedAt: item.verifiedAt || "",
+  });
+  return {
+    items: Array.isArray(payload.items) ? payload.items.map(normalize) : [],
+    candidates: Array.isArray(payload.candidates)
+      ? payload.candidates.map(normalize)
+      : [],
+  };
 }
 
 export async function submitSiteCompatibilityRequest(payload) {

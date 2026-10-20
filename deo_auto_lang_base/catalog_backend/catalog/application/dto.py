@@ -3,7 +3,7 @@ from datetime import date
 
 
 @dataclass(frozen=True, slots=True)
-class VerifiedConfiguration:
+class VehicleConfigurationSummary:
     id: str
     make: str
     model: str
@@ -14,9 +14,19 @@ class VerifiedConfiguration:
     software_version: str
     verified_at: date | None
     limitations: str
+    review_status: str = "verified"
+    year_from: int | None = None
+    year_to: int | None = None
 
 
 @dataclass(frozen=True, slots=True)
 class VerifiedCatalog:
-    items: tuple[VerifiedConfiguration, ...]
+    items: tuple[VehicleConfigurationSummary, ...]
+    updated_at: date | None
+
+
+@dataclass(frozen=True, slots=True)
+class PublicVehicleCatalog:
+    items: tuple[VehicleConfigurationSummary, ...]
+    candidates: tuple[VehicleConfigurationSummary, ...]
     updated_at: date | None
